@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
+import { EditForm, IntField } from './EditForm'
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -8,9 +9,23 @@ const ImageEditor = () => {
     </SourceImage>
   );
 
-  const handleResize = (width, height) => {
-    let updatedImage = resizeImage(width, height, image)
-    setImage({ ...updatedImage });
+  const [editForm, setEditForm] = useState(null);
+
+  const handleResize = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{width: image.props.width, height: image.props.height}}
+        onSubmit={
+          ({width, height}) => {
+            setImage({ ...resizeImage(width, height, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="Width" id="width" defaultValue={image.props.width} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={image.props.height} minValue={0} />
+      </EditForm>
+    );
   };
 
   const handleCrop = (x, y, w, h) => {
@@ -51,7 +66,7 @@ const ImageEditor = () => {
   return (
     <div>
       <div>
-        <button onClick={() => handleResize(200, 360)}>Resize</button>
+        <button onClick={() => handleResize()}>Resize</button>
         <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
         <button onClick={() => handleContrast(0.25)}>Contrast</button>
         <button onClick={() => handleBrightness(1.5)}>Brightness</button>
@@ -59,6 +74,9 @@ const ImageEditor = () => {
         <button onClick={() => handleAddText({ x: 10, y: 10 }, { fontSize: 2, textColor: "red" }, "Hello world")}>Text</button>
         <button onClick={() => handleAddCircle({ x: 100, y: 100 }, { radius: 50, color: "red" })}>Circle</button>
         <button onClick={() => handleAddRectangle({ x: 100, y: 100}, { width: 200, height: 100, color: 'red' })}>Rectangle</button>
+      </div>
+      <div>
+        {editForm && editForm}
       </div>
       <div>
         {image}
