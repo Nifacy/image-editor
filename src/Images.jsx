@@ -119,3 +119,18 @@ export const addCircle = (position, settings, image) => {
     </svg>
   );
 };
+
+export const addRectangle = (position, settings, image) => {
+  let sourceWidth = image.props.width
+  let sourceHeight = image.props.height
+
+  const { x, y } = position;
+  const { width, height, color } = settings;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      {image}
+      <rect x={x} y={y} width={width} height={height} fill={color} />
+    </svg>
+  );
+};
