@@ -156,9 +156,32 @@ const ImageEditor = () => {
     );
   }
 
-  const handleAddRectangle = (position, settings) => {
-    let updatedImage = addRectangle(position, settings, image)
-    setImage({ ...updatedImage })
+  const handleAddRectangle = () => {
+    
+    setEditForm(
+      <EditForm
+        defaultState={{
+          x: 10,
+          y: 10,
+          width: 50,
+          height: 50,
+          color: "red",
+        }}
+        onSubmit={
+          (data) => {
+            const [x, y, w, h] = [Number(data.x), Number(data.y), Number(data.width), Number(data.height)];
+            setImage({ ...addRectangle({x: x, y: y}, {width: w, height: h, color: data.color}, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="X" id="x" defaultValue={10} minValue={0} />
+        <IntField name="Y" id="y" defaultValue={10} minValue={0} />
+        <IntField name="Width" id="width" defaultValue={50} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={50} minValue={0} />
+        <TextField name="Color" id="color" defaultValue="red" />
+      </EditForm>
+    );
   }
 
   return (
@@ -171,7 +194,7 @@ const ImageEditor = () => {
         <button onClick={() => handleSaturate()}>Saturate</button>
         <button onClick={() => handleAddText()}>Text</button>
         <button onClick={() => handleAddCircle()}>Circle</button>
-        <button onClick={() => handleAddRectangle({ x: 100, y: 100}, { width: 200, height: 100, color: 'red' })}>Rectangle</button>
+        <button onClick={() => handleAddRectangle()}>Rectangle</button>
       </div>
       <div>
         {editForm && editForm}
