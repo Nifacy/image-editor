@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
-import { EditForm, IntField } from './EditForm'
+import { EditForm, IntField, RangeField } from './EditForm'
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -50,9 +50,20 @@ const ImageEditor = () => {
     );
   };
 
-  const handleContrast = (contrastCoef) => {
-    let updatedImage = addColorContrast(contrastCoef, image)
-    setImage({ ...updatedImage })
+  const handleContrast = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{contrast: 1.0}}
+        onSubmit={
+          ({contrast}) => {
+            setImage({ ...addColorContrast(contrast, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField id="contrast" name="Contrast" min={0.0} max={2.0} defaultValue={1.0} />
+      </EditForm>
+    );
   }
 
   const handleBrightness = (brightnessCoef) => {
@@ -85,7 +96,7 @@ const ImageEditor = () => {
       <div>
         <button onClick={() => handleResize()}>Resize</button>
         <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
-        <button onClick={() => handleContrast(0.25)}>Contrast</button>
+        <button onClick={() => handleContrast()}>Contrast</button>
         <button onClick={() => handleBrightness(1.5)}>Brightness</button>
         <button onClick={() => handleSaturate(2.0)}>Saturate</button>
         <button onClick={() => handleAddText({ x: 10, y: 10 }, { fontSize: 2, textColor: "red" }, "Hello world")}>Text</button>

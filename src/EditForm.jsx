@@ -30,15 +30,33 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
 export const IntField = ({ id, name, defaultValue, minValue }) => {
   return (
     <div>
-      <label>
-        {name}:
-        <input
-          type="number"
-          name={id}
-          defaultValue={defaultValue}
-          min={minValue}
-        />
-      </label>
+      <label for={id}>{name}:</label>
+      <input
+        type="number"
+        name={id}
+        defaultValue={defaultValue}
+        min={minValue}
+      />
     </div>
   );
+};
+
+export const RangeField = ({ id, name, min, max, defaultValue }) => {
+  const [value, setValue] = useState(defaultValue)
+
+  return (
+    <div>
+      <label for={id}>{name}:</label>
+      <input
+        type="range"
+        name={id}
+        min={min}
+        max={max}
+        defaultValue={defaultValue}
+        onChange={event => setValue(Number(event.target.value))}
+        step={0.01}
+      />
+      <label for={id}>{value}</label>
+    </div>
+  )
 }
