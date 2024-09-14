@@ -28,10 +28,27 @@ const ImageEditor = () => {
     );
   };
 
-  const handleCrop = (x, y, w, h) => {
-    let updatedImage = cropImage(x, y, w, h, image)
-    setImage({ ...updatedImage })
-  }
+  const handleCrop = () => {
+    let width = image.props.width;
+    let height = image.props.height;
+
+    setEditForm(
+      <EditForm
+        defaultState={{x: 0, y: 0, width: width, height: height}}
+        onSubmit={
+          ({x, y, width, height}) => {
+            setImage({ ...cropImage(x, y, width, height, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="X" id="x" defaultValue={0} minValue={0} />
+        <IntField name="Y" id="y" defaultValue={0} minValue={0} />
+        <IntField name="Width" id="width" defaultValue={width} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={height} minValue={0} />
+      </EditForm>
+    );
+  };
 
   const handleContrast = (contrastCoef) => {
     let updatedImage = addColorContrast(contrastCoef, image)
