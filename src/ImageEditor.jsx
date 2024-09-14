@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
-import { EditForm, IntField, RangeField } from './EditForm'
+import { EditForm, IntField, RangeField, TextField } from './EditForm'
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -16,7 +16,8 @@ const ImageEditor = () => {
       <EditForm
         defaultState={{width: image.props.width, height: image.props.height}}
         onSubmit={
-          ({width, height}) => {
+          (data) => {
+            const [width, height] = [Number(data.width), Number(data.height)];
             setImage({ ...resizeImage(width, height, image)});
             setEditForm(null);
           }
@@ -36,7 +37,8 @@ const ImageEditor = () => {
       <EditForm
         defaultState={{x: 0, y: 0, width: width, height: height}}
         onSubmit={
-          ({x, y, width, height}) => {
+          (data) => {
+            const [x, y, width, height] = [Number(data.x), Number(data.y), Number(data.width), Number(data.height)];
             setImage({ ...cropImage(x, y, width, height, image)});
             setEditForm(null);
           }
@@ -55,7 +57,8 @@ const ImageEditor = () => {
       <EditForm
         defaultState={{contrast: 1.0}}
         onSubmit={
-          ({contrast}) => {
+          (data) => {
+            const contrast = Number(data.contrast);
             setImage({ ...addColorContrast(contrast, image)});
             setEditForm(null);
           }
@@ -71,7 +74,8 @@ const ImageEditor = () => {
       <EditForm
         defaultState={{brightness: 1.0}}
         onSubmit={
-          ({brightness}) => {
+          (data) => {
+            const brightness = Number(data.brightness);
             setImage({ ...addBrightness(brightness, image)});
             setEditForm(null);
           }
@@ -87,7 +91,8 @@ const ImageEditor = () => {
       <EditForm
         defaultState={{saturate: 1.0}}
         onSubmit={
-          ({saturate}) => {
+          (data) => {
+            const saturate = Number(data.saturate);
             setImage({ ...addSaturate(saturate, image)});
             setEditForm(null);
           }
@@ -98,9 +103,32 @@ const ImageEditor = () => {
     );
   }
 
-  const handleAddText = (position, fontSettings, text) => {
-    let updatedImage = addText(position, fontSettings, text, image)
-    setImage({ ...updatedImage })
+  const handleAddText = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{
+          x: 0,
+          y: 0,
+          size: 1,
+          color: "black",
+          text: "",
+        }}
+        onSubmit={
+          (data) => {
+            const [x, y, size] = [Number(data.x), Number(data.y), Number(data.size)];
+            const {color, text} = data;
+            setImage({ ...addText({x: x, y: y}, {fontSize: size, textColor: color}, text, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="X" id="x" defaultValue={0} minValue={0} />
+        <IntField name="Y" id="y" defaultValue={0} minValue={0} />
+        <IntField name="Size" id="size" defaultValue={1} minValue={1} />
+        <TextField name="Color" id="color" defaultValue="black" />
+        <TextField name="Text" id="text" />
+      </EditForm>
+    );
   }
 
   const handleAddCircle = (position, settings) => {
@@ -121,7 +149,7 @@ const ImageEditor = () => {
         <button onClick={() => handleContrast()}>Contrast</button>
         <button onClick={() => handleBrightness()}>Brightness</button>
         <button onClick={() => handleSaturate()}>Saturate</button>
-        <button onClick={() => handleAddText({ x: 10, y: 10 }, { fontSize: 2, textColor: "red" }, "Hello world")}>Text</button>
+        <button onClick={() => handleAddText()}>Text</button>
         <button onClick={() => handleAddCircle({ x: 100, y: 100 }, { radius: 50, color: "red" })}>Circle</button>
         <button onClick={() => handleAddRectangle({ x: 100, y: 100}, { width: 200, height: 100, color: 'red' })}>Rectangle</button>
       </div>

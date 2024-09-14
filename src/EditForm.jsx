@@ -6,7 +6,7 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
   const handleChange = (event) => {
     setFormData({
       ...formData,
-      [event.target.name]: Number(event.target.value),
+      [event.target.name]: event.target.value,
     });
   }
 
@@ -59,4 +59,17 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
       <label for={id}>{value}</label>
     </div>
   )
-}
+};
+
+export const TextField = ({ id, name, defaultValue }) => {
+  return (
+    <div>
+      <label for={id}>{name}:</label>
+      <input
+        type="text"
+        name={id}
+        defaultValue={defaultValue || ""}
+      />
+    </div>
+  )
+};
