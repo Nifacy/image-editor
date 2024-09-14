@@ -18,3 +18,13 @@ export const resizeImage = (width, height, image) => {
     </SourceImage>
   );
 }
+
+export const cropImage = (x, y, width, height, image) => {
+  return (
+    <SourceImage width={width} height={height}>
+      <svg width={width} height={height} viewBox={`${x} ${y} ${width} ${width}`}>
+        {image}
+      </svg>
+    </SourceImage>
+  );
+}

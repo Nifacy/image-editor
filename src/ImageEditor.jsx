@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage } from './Images';
+import { SourceImage, resizeImage, cropImage } from './Images';
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -13,10 +13,22 @@ const ImageEditor = () => {
     setImage({ ...updatedImage });
   };
 
+  const handleCrop = (x, y, w, h) => {
+    let updatedImage = cropImage(x, y, w, h, image)
+    setImage({ ...updatedImage })
+  }
+
   return (
     <div>
-      <button onClick={() => handleResize(200, 360)}>Resize</button>
-      {image}
+      <div>
+        <button onClick={() => handleResize(200, 360)}>Resize</button>
+        <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
+      </div>
+      <div>
+        {image}
+        <br />
+        <p>Width: {image.props.width}, Height: {image.props.height}</p>
+      </div>
     </div>
   );
 };
