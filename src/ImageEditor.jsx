@@ -82,9 +82,20 @@ const ImageEditor = () => {
     );
   }
 
-  const handleSaturate = (saturateCoef) => {
-    let updatedImage = addSaturate(saturateCoef, image)
-    setImage({ ...updatedImage })
+  const handleSaturate = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{saturate: 1.0}}
+        onSubmit={
+          ({saturate}) => {
+            setImage({ ...addSaturate(saturate, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField id="saturate" name="Saturate" min={0.0} max={2.0} defaultValue={1.0} />
+      </EditForm>
+    );
   }
 
   const handleAddText = (position, fontSettings, text) => {
@@ -109,7 +120,7 @@ const ImageEditor = () => {
         <button onClick={() => handleCrop()}>Crop</button>
         <button onClick={() => handleContrast()}>Contrast</button>
         <button onClick={() => handleBrightness()}>Brightness</button>
-        <button onClick={() => handleSaturate(2.0)}>Saturate</button>
+        <button onClick={() => handleSaturate()}>Saturate</button>
         <button onClick={() => handleAddText({ x: 10, y: 10 }, { fontSize: 2, textColor: "red" }, "Hello world")}>Text</button>
         <button onClick={() => handleAddCircle({ x: 100, y: 100 }, { radius: 50, color: "red" })}>Circle</button>
         <button onClick={() => handleAddRectangle({ x: 100, y: 100}, { width: 200, height: 100, color: 'red' })}>Rectangle</button>
