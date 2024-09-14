@@ -28,3 +28,24 @@ export const cropImage = (x, y, width, height, image) => {
     </SourceImage>
   );
 }
+
+export const addColorContrast = (r, g, b, image) => {
+  let sourceWidth = image.props.width
+  let sourceHeight = image.props.height
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <filter id="contrast">
+        <feComponentTransfer>
+          <feFuncR type="linear" slope={`${r}`} />
+          <feFuncG type="linear" slope={`${g}`} />
+          <feFuncB type="linear" slope={`${b}`} />
+        </feComponentTransfer>
+      </filter>
+
+      <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`} filter="url(#contrast)">
+        {image}
+      </svg>
+    </svg>
+  );
+}
