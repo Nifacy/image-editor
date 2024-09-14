@@ -70,3 +70,20 @@ export const addBrightness = (brightnessCoef, image) => {
     </svg>
   );
 }
+
+export const addSaturate = (saturateCoef, image) => {
+  let sourceWidth = image.props.width
+  let sourceHeight = image.props.height
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <filter id="saturate">
+        <feColorMatrix type="saturate" values={`${saturateCoef}`} />
+      </filter>
+
+      <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`} filter="url(#saturate)">
+        {image}
+      </svg>
+    </svg>
+  );
+}

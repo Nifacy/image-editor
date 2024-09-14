@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness } from './Images';
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate } from './Images';
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -28,6 +28,11 @@ const ImageEditor = () => {
     setImage({ ...updatedImage })
   }
 
+  const handleSaturate = (saturateCoef) => {
+    let updatedImage = addSaturate(saturateCoef, image)
+    setImage({ ...updatedImage })
+  }
+
   return (
     <div>
       <div>
@@ -35,6 +40,7 @@ const ImageEditor = () => {
         <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
         <button onClick={() => handleContrast(0.25)}>Contrast</button>
         <button onClick={() => handleBrightness(1.5)}>Brightness</button>
+        <button onClick={() => handleSaturate(2.0)}>Saturate</button>
       </div>
       <div>
         {image}
