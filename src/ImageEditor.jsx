@@ -66,9 +66,20 @@ const ImageEditor = () => {
     );
   }
 
-  const handleBrightness = (brightnessCoef) => {
-    let updatedImage = addBrightness(brightnessCoef, image)
-    setImage({ ...updatedImage })
+  const handleBrightness = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{brightness: 1.0}}
+        onSubmit={
+          ({brightness}) => {
+            setImage({ ...addBrightness(brightness, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField id="brightness" name="Brightness" min={0.0} max={2.0} defaultValue={1.0} />
+      </EditForm>
+    );
   }
 
   const handleSaturate = (saturateCoef) => {
@@ -95,9 +106,9 @@ const ImageEditor = () => {
     <div>
       <div>
         <button onClick={() => handleResize()}>Resize</button>
-        <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
+        <button onClick={() => handleCrop()}>Crop</button>
         <button onClick={() => handleContrast()}>Contrast</button>
-        <button onClick={() => handleBrightness(1.5)}>Brightness</button>
+        <button onClick={() => handleBrightness()}>Brightness</button>
         <button onClick={() => handleSaturate(2.0)}>Saturate</button>
         <button onClick={() => handleAddText({ x: 10, y: 10 }, { fontSize: 2, textColor: "red" }, "Hello world")}>Text</button>
         <button onClick={() => handleAddCircle({ x: 100, y: 100 }, { radius: 50, color: "red" })}>Circle</button>
