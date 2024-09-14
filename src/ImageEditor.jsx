@@ -131,9 +131,29 @@ const ImageEditor = () => {
     );
   }
 
-  const handleAddCircle = (position, settings) => {
-    let updatedImage = addCircle(position, settings, image)
-    setImage({ ...updatedImage })
+  const handleAddCircle = () => {
+    setEditForm(
+      <EditForm
+        defaultState={{
+          x: 0,
+          y: 0,
+          radius: 1,
+          color: "red",
+        }}
+        onSubmit={
+          (data) => {
+            const [x, y, radius] = [Number(data.x), Number(data.y), Number(data.radius)];
+            setImage({ ...addCircle({x: x, y: y}, {radius: radius, color: data.color}, image)});
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="X" id="x" defaultValue={0} minValue={0} />
+        <IntField name="Y" id="y" defaultValue={0} minValue={0} />
+        <IntField name="Radius" id="radius" defaultValue={1} minValue={1} />
+        <TextField name="Color" id="color" defaultValue="red" />
+      </EditForm>
+    );
   }
 
   const handleAddRectangle = (position, settings) => {
@@ -150,7 +170,7 @@ const ImageEditor = () => {
         <button onClick={() => handleBrightness()}>Brightness</button>
         <button onClick={() => handleSaturate()}>Saturate</button>
         <button onClick={() => handleAddText()}>Text</button>
-        <button onClick={() => handleAddCircle({ x: 100, y: 100 }, { radius: 50, color: "red" })}>Circle</button>
+        <button onClick={() => handleAddCircle()}>Circle</button>
         <button onClick={() => handleAddRectangle({ x: 100, y: 100}, { width: 200, height: 100, color: 'red' })}>Rectangle</button>
       </div>
       <div>
