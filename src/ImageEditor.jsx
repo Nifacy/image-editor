@@ -18,8 +18,8 @@ const ImageEditor = () => {
     setImage({ ...updatedImage })
   }
 
-  const handleContrast = (r, g, b) => {
-    let updatedImage = addColorContrast(r, g, b, image)
+  const handleContrast = (contrastCoef) => {
+    let updatedImage = addColorContrast(contrastCoef, image)
     setImage({ ...updatedImage })
   }
 
@@ -28,7 +28,7 @@ const ImageEditor = () => {
       <div>
         <button onClick={() => handleResize(200, 360)}>Resize</button>
         <button onClick={() => handleCrop(25, 25, 200, 200)}>Crop</button>
-        <button onClick={() => handleContrast(2, 2, 2)}>Contrast</button>
+        <button onClick={() => handleContrast(0.25)}>Contrast</button>
       </div>
       <div>
         {image}
