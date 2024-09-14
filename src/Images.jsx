@@ -87,3 +87,20 @@ export const addSaturate = (saturateCoef, image) => {
     </svg>
   );
 }
+
+export const addText = (position, fontSettings, text, image) => {
+  let sourceWidth = image.props.width
+  let sourceHeight = image.props.height
+
+  const { fontSize, textColor } = fontSettings;
+  const { x, y } = position;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      {image}
+      <text x={x} y={y} fontSize={`${fontSize}em`} fill={textColor} dominantBaseline="hanging">
+        {text}
+      </text>
+    </svg>
+  );
+};
