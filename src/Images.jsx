@@ -49,3 +49,24 @@ export const addColorContrast = (contrastCoef, image) => {
     </svg>
   );
 }
+
+export const addBrightness = (brightnessCoef, image) => {
+  let sourceWidth = image.props.width
+  let sourceHeight = image.props.height
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <filter id="brightness">
+        <feComponentTransfer>
+          <feFuncR type="linear" slope={`${brightnessCoef}`} />
+          <feFuncG type="linear" slope={`${brightnessCoef}`} />
+          <feFuncB type="linear" slope={`${brightnessCoef}`} />
+        </feComponentTransfer>
+      </filter>
+
+      <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`} filter="url(#brightness)">
+        {image}
+      </svg>
+    </svg>
+  );
+}
