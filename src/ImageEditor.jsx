@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
 import { EditForm, IntField, RangeField, TextField } from './EditForm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
-const CommandItem = ({ label, onClick }) => {
+const CommandItem = ({ label, onClick, icon }) => {
   return (
-    <div key={label} className="menu_item border" onClick={onClick}>
-      <div className="icon" />
+    <div key={label} className="menu_item btn btn-light" onClick={onClick}>
+      <FontAwesomeIcon className="icon" icon={icon} />
       <div className="label">{label}</div>
     </div>
   );
@@ -65,6 +67,48 @@ const ImageEditor = () => {
         }
       >
         <IntField name="Width" id="width" defaultValue={defaults.width} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
+        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
         <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
       </EditForm>
     );
@@ -245,14 +289,14 @@ const ImageEditor = () => {
   return (
     <div className="image_editor">
       <CommandMenu>
-        <CommandItem label="Resize" onClick={handleResize} />
-        <CommandItem label="Crop" onClick={handleCrop} />
-        <CommandItem label="Contrast" onClick={handleContrast} />
-        <CommandItem label="Brightness" onClick={handleBrightness} />
-        <CommandItem label="Saturate" onClick={handleSaturate} />
-        <CommandItem label="Text" onClick={handleAddText} />
-        <CommandItem label="Circle" onClick={handleAddCircle} />
-        <CommandItem label="Rectangle" onClick={handleAddRectangle} />
+        <CommandItem label="Resize" onClick={handleResize} icon={faExpand} />
+        <CommandItem label="Crop" onClick={handleCrop} icon={faCropSimple} />
+        <CommandItem label="Contrast" onClick={handleContrast} icon={faCircleHalfStroke} />
+        <CommandItem label="Brightness" onClick={handleBrightness} icon={faSun} />
+        <CommandItem label="Saturate" onClick={handleSaturate} icon={faCircleHalfStroke} />
+        <CommandItem label="Text" onClick={handleAddText} icon={faT} />
+        <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
+        <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />

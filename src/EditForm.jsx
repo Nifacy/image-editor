@@ -19,9 +19,13 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
 
   return (
     <form className="edit_form" onSubmit={handleSubmit} onChange={handleChange}>
-      {children}
-      <div className="property">
-        <input type="submit" value="Apply" />
+      <div className="content">
+        <div className="content2">
+          {children}
+        </div>
+      </div>
+      <div className="submit">
+        <input className="submit_button btn btn-primary" type="submit" value="Apply" />
       </div>
     </form>
   );
@@ -29,15 +33,17 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
 
 export const IntField = ({ id, name, defaultValue, minValue }) => {
   return (
-    <div className="property">
-      <label className="property_label">{name}:</label>
-      <input
-        type="number"
-        className="property_value"
-        name={id}
-        defaultValue={defaultValue}
-        min={minValue}
-      />
+    <div className="property form-group row">
+      <label className="property_label col-auto col-form-label">{name}:</label>
+      <div className="property_value col-sm-5">
+        <input
+          type="number"
+          className="form-control"
+          name={id}
+          defaultValue={defaultValue}
+          min={minValue}
+        />
+      </div>
     </div>
   );
 };
@@ -46,11 +52,12 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
   const [value, setValue] = useState(defaultValue)
 
   return (
-    <div className="property">
-      <label className="property_label">{name}:</label>
-      <div className="property_value range_input">
+    <div className="property form-group row">
+      <label className="property_label col-auto col-form-label">{name}:</label>
+      <div className="property_value col-auto d-flex align-items-center" style={{ gap: "10px" }}>
         <input
           type="range"
+          className="form-control-range"
           name={id}
           min={min}
           max={max}
@@ -58,7 +65,7 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
           onChange={event => setValue(Number(event.target.value))}
           step={0.01}
         />
-        <label>{value}</label>
+        <label className="ml-2" style={{ width: "40px" }}>{value}</label>
       </div>
     </div>
   )
@@ -66,15 +73,17 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
 
 export const TextField = ({ id, name, defaultValue }) => {
   return (
-    <div className="property">
-      <label className="property_label">{name}:</label>
-      <input
-        type="text"
-        className="property_value"
-        name={id}
-        key={Date.now()}
-        defaultValue={defaultValue || ""}
-      />
+    <div className="property form-group row">
+      <label className="property_label col-auto col-form-label">{name}:</label>
+      <div class="property_value col-auto">
+        <input
+          type="text"
+          className="form-control"
+          name={id}
+          key={Date.now()}
+          defaultValue={defaultValue || ""}
+        />
+      </div>
     </div>
   );
 };

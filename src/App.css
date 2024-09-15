@@ -20,13 +20,9 @@ align-items: center;
 .test_block {
   width: 800px;
   height: 600px;
-  border: 2px solid black;
   padding: 20px;
   display: flex;
   align-items: stretch;
-}
-.border {
-  border: 2px solid black;
 }
 
 .image_editor {
@@ -42,17 +38,18 @@ align-items: center;
 }
 
 .menu_item {
-  display: flex;
+  display: flex !important;
   align-items: center;
   flex-direction: column;
   padding: 10px;
   gap: 10px;
+  border-radius: 0px !important;
 }
 
 .menu_item .icon {
-  width: 40px;
-  height: 40px;
-  background-color: red;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
 }
 
 .menu_item .label {
@@ -60,9 +57,22 @@ align-items: center;
 }
 
 .edit_form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 20px;
+  height: 100%;
+}
+
+.edit_form .content {
+  flex: 1;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.edit_form .content .content2 {
   display: grid;
   gap: 10px 5px;
-  padding: 10px;
 }
 
 .edit_form .property_label {
@@ -86,4 +96,8 @@ align-items: center;
 .range_input label {
   display: inline-block;
   min-width: 40px;
+}
+
+.submit_button {
+  width: 100%;
 }
