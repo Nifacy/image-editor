@@ -110,3 +110,16 @@ align-items: center;
   border: unset;
   border-radius: 50%;
 }
+
+.choose_picture {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  align-items: center;
+}
+
+.choose_picture .icon {
+  width: 100px;
+  height: 100px;
+}
+
