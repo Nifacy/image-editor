@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BlockPicker } from 'react-color';
 
 export const EditForm = ({ defaultState, children, onSubmit }) => {
   const [formData, setFormData] = useState(defaultState)
@@ -71,11 +72,27 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
   )
 };
 
+export const ColorField = ({ id, name, defaultValue }) => {
+  return (
+    <div className="property form-group row">
+      <label className="property_label col-auto col-form-label">{name}:</label>
+      <div className="property_value col-auto d-flex align-items-center" style={{ gap: "10px" }}>
+        <input
+          type="color"
+          name={id}
+          defaultValue={defaultValue}
+          className="form-control-color color_picker"
+        />
+      </div>
+    </div>
+  )
+};
+
 export const TextField = ({ id, name, defaultValue }) => {
   return (
     <div className="property form-group row">
       <label className="property_label col-auto col-form-label">{name}:</label>
-      <div class="property_value col-auto">
+      <div className="property_value col-auto">
         <input
           type="text"
           className="form-control"

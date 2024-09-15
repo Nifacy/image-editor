@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
-import { EditForm, IntField, RangeField, TextField } from './EditForm'
+import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
@@ -67,48 +67,6 @@ const ImageEditor = () => {
         }
       >
         <IntField name="Width" id="width" defaultValue={defaults.width} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
         <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
       </EditForm>
     );
@@ -224,7 +182,7 @@ const ImageEditor = () => {
         <IntField name="X" id="x" defaultValue={defaults.x} minValue={0} />
         <IntField name="Y" id="y" defaultValue={defaults.y} minValue={0} />
         <IntField name="Size" id="size" defaultValue={defaults.size} minValue={1} />
-        <TextField name="Color" id="color" defaultValue={defaults.color} />
+        <ColorField name="Color" id="color" defaultValue="#cc3639" />
         <TextField name="Text" id="text" defaultValue={defaults.text} />
       </EditForm>
     );
@@ -252,7 +210,7 @@ const ImageEditor = () => {
         <IntField name="X" id="x" defaultValue={defaults.x} minValue={0} />
         <IntField name="Y" id="y" defaultValue={defaults.y} minValue={0} />
         <IntField name="Radius" id="radius" defaultValue={defaults.radius} minValue={1} />
-        <TextField name="Color" id="color" defaultValue={defaults.color} />
+        <ColorField name="Color" id="color" defaultValue="#cc3639" />
       </EditForm>
     );
   }
@@ -281,7 +239,7 @@ const ImageEditor = () => {
         <IntField name="Y" id="y" defaultValue={defaults.y} minValue={0} />
         <IntField name="Width" id="width" defaultValue={defaults.width} minValue={0} />
         <IntField name="Height" id="height" defaultValue={defaults.height} minValue={0} />
-        <TextField name="Color" id="color" defaultValue={defaults.color} />
+        <ColorField name="Color" id="color" defaultValue="#cc3639" />
       </EditForm>
     );
   }
