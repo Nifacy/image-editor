@@ -30,7 +30,7 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
 export const IntField = ({ id, name, defaultValue, minValue }) => {
   return (
     <div>
-      <label >{name}:</label>
+      <label>{name}:</label>
       <input
         type="number"
         name={id}
@@ -46,7 +46,7 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
 
   return (
     <div>
-      <label >{name}:</label>
+      <label>{name}:</label>
       <input
         type="range"
         name={id}
@@ -56,7 +56,7 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
         onChange={event => setValue(Number(event.target.value))}
         step={0.01}
       />
-      <label >{value}</label>
+      <label>{value}</label>
     </div>
   )
 };
@@ -64,12 +64,13 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
 export const TextField = ({ id, name, defaultValue }) => {
   return (
     <div>
-      <label >{name}:</label>
+      <label>{name}:</label>
       <input
         type="text"
         name={id}
+        key={Date.now()}
         defaultValue={defaultValue || ""}
       />
     </div>
-  )
+  );
 };
