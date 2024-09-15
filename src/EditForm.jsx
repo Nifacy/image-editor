@@ -18,9 +18,9 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} onChange={handleChange}>
+    <form className="edit_form" onSubmit={handleSubmit} onChange={handleChange}>
       {children}
-      <div>
+      <div className="property">
         <input type="submit" value="Apply" />
       </div>
     </form>
@@ -29,10 +29,11 @@ export const EditForm = ({ defaultState, children, onSubmit }) => {
 
 export const IntField = ({ id, name, defaultValue, minValue }) => {
   return (
-    <div>
-      <label>{name}:</label>
+    <div className="property">
+      <label className="property_label">{name}:</label>
       <input
         type="number"
+        className="property_value"
         name={id}
         defaultValue={defaultValue}
         min={minValue}
@@ -45,28 +46,31 @@ export const RangeField = ({ id, name, min, max, defaultValue }) => {
   const [value, setValue] = useState(defaultValue)
 
   return (
-    <div>
-      <label>{name}:</label>
-      <input
-        type="range"
-        name={id}
-        min={min}
-        max={max}
-        defaultValue={defaultValue}
-        onChange={event => setValue(Number(event.target.value))}
-        step={0.01}
-      />
-      <label>{value}</label>
+    <div className="property">
+      <label className="property_label">{name}:</label>
+      <div className="property_value range_input">
+        <input
+          type="range"
+          name={id}
+          min={min}
+          max={max}
+          defaultValue={defaultValue}
+          onChange={event => setValue(Number(event.target.value))}
+          step={0.01}
+        />
+        <label>{value}</label>
+      </div>
     </div>
   )
 };
 
 export const TextField = ({ id, name, defaultValue }) => {
   return (
-    <div>
-      <label>{name}:</label>
+    <div className="property">
+      <label className="property_label">{name}:</label>
       <input
         type="text"
+        className="property_value"
         name={id}
         key={Date.now()}
         defaultValue={defaultValue || ""}

@@ -1,6 +1,42 @@
 import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
 import { EditForm, IntField, RangeField, TextField } from './EditForm'
+import './App.css'
+
+const CommandItem = ({ label, onClick }) => {
+  return (
+    <div key={label} className="menu_item border" onClick={onClick}>
+      <div className="icon" />
+      <div className="label">{label}</div>
+    </div>
+  );
+}
+
+const CommandMenu = ({ children }) => {
+  return (
+    <div className="menu border">
+      {children}
+    </div>
+  );
+}
+
+const Preview = ({ image }) => {
+  return (
+    <div className="preview border">
+      <svg className="container" width="100%" height="100%" viewBox={`0 0 ${image.props.width} ${image.props.height}`}>
+        {image}
+      </svg>
+  </div>
+  );
+}
+
+const CommandSettings = ({ editForm }) => {
+  return (
+    <div className="settings border">
+      {editForm && editForm}
+    </div>
+  );
+}
 
 const ImageEditor = () => {
   const [image, setImage] = useState(
@@ -207,25 +243,19 @@ const ImageEditor = () => {
   }
 
   return (
-    <div>
-      <div>
-        <button onClick={handleResize}>Resize</button>
-        <button onClick={handleCrop}>Crop</button>
-        <button onClick={handleContrast}>Contrast</button>
-        <button onClick={handleBrightness}>Brightness</button>
-        <button onClick={handleSaturate}>Saturate</button>
-        <button onClick={handleAddText}>Text</button>
-        <button onClick={handleAddCircle}>Circle</button>
-        <button onClick={handleAddRectangle}>Rectangle</button>
-      </div>
-      <div>
-        {editForm && editForm}
-      </div>
-      <div>
-        {image}
-        <br />
-        <p>Width: {image.props.width}, Height: {image.props.height}</p>
-      </div>
+    <div className="image_editor">
+      <CommandMenu>
+        <CommandItem label="Resize" onClick={handleResize} />
+        <CommandItem label="Crop" onClick={handleCrop} />
+        <CommandItem label="Contrast" onClick={handleContrast} />
+        <CommandItem label="Brightness" onClick={handleBrightness} />
+        <CommandItem label="Saturate" onClick={handleSaturate} />
+        <CommandItem label="Text" onClick={handleAddText} />
+        <CommandItem label="Circle" onClick={handleAddCircle} />
+        <CommandItem label="Rectangle" onClick={handleAddRectangle} />
+      </CommandMenu>
+      <CommandSettings editForm={editForm} />
+      <Preview image={image} />
     </div>
   );
 };
