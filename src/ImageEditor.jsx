@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addExposure, rotateImage, mirrorImage } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -343,7 +343,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
-        <CommandItem label="Exposure" onClick={handleAddExposure} icon={faSquare} />
+        <CommandItem label="Exposure" onClick={handleAddExposure} icon={faHurricane} />
         <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
