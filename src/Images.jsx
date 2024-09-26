@@ -134,3 +134,23 @@ export const addRectangle = (position, settings, image) => {
     </svg>
   );
 };
+
+export const addLine = (position, settings, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  const { start, end } = position;
+  const { color, weight } = settings;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      {image}
+      <line 
+        x1={start.x} y1={start.y} 
+        x2={end.x} y2={end.y} 
+        stroke={color} 
+        strokeWidth={weight} 
+      />
+    </svg>
+  );
+};

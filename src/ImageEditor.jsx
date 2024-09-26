@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addLine } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
@@ -244,6 +244,57 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddLine = () => {
+    const defaults = {
+      startX: 0,
+      startY: 0,
+      endX: 50,
+      endY: 50,
+      color: "#cc3639",
+      weight: 2,
+    };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            const [ startX, startY, endX, endY, weight ] = [
+              Number(data.startX),
+              Number(data.startY),
+              Number(data.endX),
+              Number(data.endY),
+              Number(data.weight)
+            ];
+
+            const position = {
+              start: { x: startX, y: startY },
+              end: { x: endX, y: endY }
+            };
+
+            const settings = {
+              color: data.color,
+              weight: weight
+            };
+
+            setImage({ ...addLine(position, settings, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="Start (x)" id="startX" defaultValue={defaults.startX} minValue={0} />
+        <IntField name="Start (y)" id="startY" defaultValue={defaults.startY} minValue={0} />
+
+        <IntField name="End (x)" id="endX" defaultValue={defaults.endX} minValue={0} />
+        <IntField name="End (y)" id="endY" defaultValue={defaults.endY} minValue={0} />
+
+        <IntField name="Weight" id="weight" defaultValue={defaults.weight} minValue={1} />
+        <ColorField name="Color" id="color" defaultValue={defaults.color} />
+      </EditForm>
+    );
+  }
+
+  // TODO: change icon for line command
   return (
     <div className="image_editor">
       <CommandMenu>
@@ -255,6 +306,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
+        <CommandItem label="Line" onClick={handleAddLine} icon={faSquare} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
