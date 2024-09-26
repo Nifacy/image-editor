@@ -272,3 +272,19 @@ export const addLine = (position, settings, image) => {
     </svg>
   );
 };
+
+export const addLightTemperature = (temperature, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  const angle = temperature * 20.0;
+  const filterValue = `hue-rotate(${angle}deg)`;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g style={{ filter: filterValue }}>
+        {image}
+      </g>
+    </svg>
+  );
+};

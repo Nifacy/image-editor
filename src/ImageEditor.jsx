@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addLine, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter, addExposure, rotateImage, mirrorImage } from './Images';
+import { SourceImage, resizeImage, cropImage, addColorContrast,addLightTemperature, addLine, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter, addExposure, rotateImage, mirrorImage } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun, faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons'
+import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun, faMagicWandSparkles, faThermometer } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -357,6 +357,26 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddLightTemperature = () => {
+    const defaults = {
+      temperature: 0.0
+    };
+  
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addLightTemperature(data.temperature, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField name="Temperature" id="temperature" defaultValue={defaults.temperature} min={-1.0} max={1.0} />
+      </EditForm>
+    );
+  }
+
   const handleAddLine = () => {
     const defaults = {
       startX: 0,
@@ -423,6 +443,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Exposure" onClick={handleAddExposure} icon={faHurricane} />
         <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
         <CommandItem label="Line" onClick={handleAddLine} icon={faSquare} />
+      <CommandItem label="Temperature" onClick={handleAddLightTemperature} icon={faThermometer} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
