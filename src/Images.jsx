@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SourceImage = ({ width, height, children }) => (
   <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
@@ -148,6 +148,78 @@ export const addExposure = (exposure, image) => {
   return (
     <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
       <g style={{ filter: filterValue }}>
+        {image}
+      </g>
+    </svg>
+  );
+};
+
+const _toRadians = (angle) => (angle * Math.PI) / 180.0;
+
+const _rotatePoint = (point, angle) => {
+  const rad = _toRadians(angle);
+  const { x, y } = point;
+
+  const rotatedX = x * Math.cos(rad) - y * Math.sin(rad);
+  const rotatedY = x * Math.sin(rad) + y * Math.cos(rad);
+
+  return { x: rotatedX, y: rotatedY };
+};
+
+const _getRotatedImageSize = (w, h, angle) => {
+  const points = [
+    { x: -0.5 * w, y: 0.5 * h },    // Top-left
+    { x: 0.5 * w, y: 0.5 * h },     // Top-right
+    { x: -0.5 * w, y: -0.5 * h },   // Bottom-left
+    { x: 0.5 * w, y: -0.5 * h }     // Bottom-right
+  ];
+
+  const rotatedPoints = points.map(point => _rotatePoint(point, angle));
+
+  const maxX = Math.max(...rotatedPoints.map(p => p.x));
+  const maxY = Math.max(...rotatedPoints.map(p => p.y));
+
+  return {
+    width: Math.abs(maxX),
+    height: Math.abs(maxY)
+  };
+};
+
+export const rotateImage = (angle, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  let sourceCenterX = 0.5 * sourceWidth;
+  let sourceCenterY = 0.5 * sourceHeight;
+
+  const normalizedAngle = angle % 360;
+
+  const { width: newWidth, height: newHeight } = _getRotatedImageSize(sourceWidth, sourceHeight, angle);
+
+  return (
+    <svg width={2 * newWidth} height={2 * newHeight} viewBox={`${sourceCenterX - newWidth} ${sourceCenterY - newHeight} ${2 * newWidth} ${2 * newHeight}`}>
+      <g transform={`rotate(${normalizedAngle} ${sourceCenterX} ${sourceCenterY})`}>
+        {image}
+      </g>
+    </svg>
+  );
+};
+
+export const mirrorImage = (direction, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  let transformValue = "";
+
+  if (direction === "horizontal") {
+    transformValue = `scale(-1, 1) translate(-${sourceWidth}, 0)`;
+  } else if (direction === "vertical") {
+    transformValue = `scale(1, -1) translate(0, -${sourceHeight})`;
+  }
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g transform={transformValue}>
         {image}
       </g>
     </svg>
