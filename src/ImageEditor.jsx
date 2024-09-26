@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addExposure } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
@@ -244,6 +244,25 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddExposure = () => {
+    const defaults = { exposure: 0.0 };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addExposure(Number(data.exposure), image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField name="Exposure" id="exposure" min={-1.0} max={1.0} />
+      </EditForm>
+    );
+    addExposure
+  }
+
   return (
     <div className="image_editor">
       <CommandMenu>
@@ -255,6 +274,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
+        <CommandItem label="Exposure" onClick={handleAddExposure} icon={faSquare} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />

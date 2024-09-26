@@ -134,3 +134,22 @@ export const addRectangle = (position, settings, image) => {
     </svg>
   );
 };
+
+// HINT: exposure coef value in range [-1; 1]
+export const addExposure = (exposure, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  let brightness = 100.0 * (1.0 + exposure);
+  let contrast = 100.0 * (1.0 + exposure / 8.0);
+
+  let filterValue = `brightness(${brightness}%) contrast(${contrast}%)`;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g style={{ filter: filterValue }}>
+        {image}
+      </g>
+    </svg>
+  );
+};
