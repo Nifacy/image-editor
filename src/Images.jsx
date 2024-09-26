@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SourceImage = ({ width, height, children }) => (
   <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
@@ -131,6 +131,23 @@ export const addRectangle = (position, settings, image) => {
     <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
       {image}
       <rect x={x} y={y} width={width} height={height} fill={color} />
+    </svg>
+  );
+};
+
+// HINT: temperature value must be in range [-1; 1]
+export const addLightTemperature = (temperature, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  const angle = temperature * 20.0;
+  const filterValue = `hue-rotate(${angle}deg)`;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g style={{ filter: filterValue }}>
+        {image}
+      </g>
     </svg>
   );
 };
