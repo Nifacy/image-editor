@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter, addExposure, rotateImage, mirrorImage } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun, faMagicWandSparkles } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -336,6 +336,12 @@ const ImageEditor = ({ sourceImage }) => {
       filter: "black-white"
     };
 
+    const options = [
+      { name: "Black & White", value: "black-white" },
+      { name: "Sepia", value: "sepia" },
+      { name: "Vintage", value: "vintage" },
+    ];
+
     setEditForm(
       <EditForm
         defaultState={defaults}
@@ -346,7 +352,7 @@ const ImageEditor = ({ sourceImage }) => {
           }
         }
       >
-        <TextField name="Filter" id="filter" defaultValue={defaults.filter} />
+        <DropdownField name="Filter" id="filter" options={options} defaultValue={defaults.filter} />
       </EditForm>
     );
   }
@@ -363,7 +369,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
-        <CommandItem label="Filter" onClick={handleAddFilter} icon={faSquare} />
+        <CommandItem label="Filter" onClick={handleAddFilter} icon={faMagicWandSparkles} />
         <CommandItem label="Exposure" onClick={handleAddExposure} icon={faHurricane} />
         <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
       </CommandMenu>
