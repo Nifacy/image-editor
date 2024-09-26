@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SourceImage = ({ width, height, children }) => (
   <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
@@ -131,6 +131,27 @@ export const addRectangle = (position, settings, image) => {
     <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
       {image}
       <rect x={x} y={y} width={width} height={height} fill={color} />
+    </svg>
+  );
+};
+
+export const mirrorImage = (direction, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  let transformValue = "";
+
+  if (direction === "horizontal") {
+    transformValue = `scale(-1, 1) translate(-${sourceWidth}, 0)`;
+  } else if (direction === "vertical") {
+    transformValue = `scale(1, -1) translate(0, -${sourceHeight})`;
+  }
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g transform={transformValue}>
+        {image}
+      </g>
     </svg>
   );
 };
