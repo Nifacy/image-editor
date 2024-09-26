@@ -134,3 +134,20 @@ export const addRectangle = (position, settings, image) => {
     </svg>
   );
 };
+
+export const rotateImage = (angle, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+  const normalizedAngle = angle % 360;
+
+  const centerX = 0.5 * sourceWidth;
+  const centerY = 0.5 * sourceHeight;
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g transform={`rotate(${normalizedAngle} ${centerX} ${centerY})`}>
+        {image}
+      </g>
+    </svg>
+  );
+};
