@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
-import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
+import { SourceImage, resizeImage, cropImage, addColorContrast,addLightTemperature, addLine, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter, addExposure, rotateImage, mirrorImage } from './Images';
+import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun, faMagicWandSparkles, faThermometer } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -10,6 +10,28 @@ const CommandItem = ({ label, onClick, icon }) => {
     <div key={label} className="menu_item btn btn-light" onClick={onClick}>
       <FontAwesomeIcon className="icon" icon={icon} />
       <div className="label">{label}</div>
+    </div>
+  );
+}
+
+const RotateButton = ({ degrees, icon, onClick }) => {
+  return (
+    <button type="button" className="btn btn-light" onClick={() => onClick(degrees)}>
+      <div class="content">
+        <FontAwesomeIcon icon={icon} />
+        <div class="degrees">{degrees}&deg;</div>
+      </div>
+    </button>
+  );
+}
+
+const RotateButtonContainer = ({ onClick }) => {
+  return (
+    <div class="rotate_panel">
+      <RotateButton onClick={onClick} icon={faRotateRight} degrees={90} />
+      <RotateButton onClick={onClick} icon={faRotateLeft} degrees={-90} />
+      <RotateButton onClick={onClick} icon={faRotateRight} degrees={45} />
+      <RotateButton onClick={onClick} icon={faRotateLeft} degrees={-45} />
     </div>
   );
 }
@@ -244,6 +266,167 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddExposure = () => {
+    const defaults = { exposure: 0.0 };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addExposure(Number(data.exposure), image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField name="Exposure" id="exposure" min={-1.0} max={1.0} />
+      </EditForm>
+    );
+    addExposure
+  }
+
+  const handleRotateImage = () => {
+    const defaults = {
+      angle: 0.0
+    };
+
+    const _rotateImage = (angle) => {
+      setImage({ ...rotateImage(angle, image) });
+      setEditForm(null);
+    };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={(data) => _rotateImage(Number(data.angle))}
+      >
+        <RangeField name="Angle" id="angle" min={0.0} max={360.0} defaultValue={defaults.angle} />
+        <RotateButtonContainer onClick={_rotateImage} />
+      </EditForm>
+    )
+  }
+
+  const handleMirrorImage = () => {
+    const defaults = {
+      direction: "horizontal",
+    };
+
+    const options = [
+      { name: "Horizontal", value: "horizontal" },
+      { name: "Vertical", value: "vertical" },
+    ]
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...mirrorImage(data.direction, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <DropdownField name="Direction" id="direction" options={options} defaultValue={defaults.direction} />
+      </EditForm>
+    );
+  }
+
+  const handleAddFilter = () => {
+    const defaults = {
+      filter: "black-white"
+    };
+
+    const options = [
+      { name: "Black & White", value: "black-white" },
+      { name: "Sepia", value: "sepia" },
+      { name: "Vintage", value: "vintage" },
+    ];
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addFilter(data.filter, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <DropdownField name="Filter" id="filter" options={options} defaultValue={defaults.filter} />
+      </EditForm>
+    );
+  }
+
+  const handleAddLightTemperature = () => {
+    const defaults = {
+      temperature: 0.0
+    };
+  
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addLightTemperature(data.temperature, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField name="Temperature" id="temperature" defaultValue={defaults.temperature} min={-1.0} max={1.0} />
+      </EditForm>
+    );
+  }
+
+  const handleAddLine = () => {
+    const defaults = {
+      startX: 0,
+      startY: 0,
+      endX: 50,
+      endY: 50,
+      color: "#cc3639",
+      weight: 2,
+    };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            const [ startX, startY, endX, endY, weight ] = [
+              Number(data.startX),
+              Number(data.startY),
+              Number(data.endX),
+              Number(data.endY),
+              Number(data.weight)
+            ];
+
+            const position = {
+              start: { x: startX, y: startY },
+              end: { x: endX, y: endY }
+            };
+
+            const settings = {
+              color: data.color,
+              weight: weight
+            };
+
+            setImage({ ...addLine(position, settings, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <IntField name="Start (x)" id="startX" defaultValue={defaults.startX} minValue={0} />
+        <IntField name="Start (y)" id="startY" defaultValue={defaults.startY} minValue={0} />
+
+        <IntField name="End (x)" id="endX" defaultValue={defaults.endX} minValue={0} />
+        <IntField name="End (y)" id="endY" defaultValue={defaults.endY} minValue={0} />
+
+        <IntField name="Weight" id="weight" defaultValue={defaults.weight} minValue={1} />
+        <ColorField name="Color" id="color" defaultValue={defaults.color} />
+      </EditForm>
+    );
+  }
+
   return (
     <div className="image_editor">
       <CommandMenu>
@@ -252,9 +435,15 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Contrast" onClick={handleContrast} icon={faCircleHalfStroke} />
         <CommandItem label="Brightness" onClick={handleBrightness} icon={faSun} />
         <CommandItem label="Saturate" onClick={handleSaturate} icon={faCircleHalfStroke} />
+        <CommandItem label="Rotate" onClick={handleRotateImage} icon={faRotateRight} />
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
+        <CommandItem label="Filter" onClick={handleAddFilter} icon={faMagicWandSparkles} />
+        <CommandItem label="Exposure" onClick={handleAddExposure} icon={faHurricane} />
+        <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
+        <CommandItem label="Line" onClick={handleAddLine} icon={faSquare} />
+      <CommandItem label="Temperature" onClick={handleAddLightTemperature} icon={faThermometer} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
