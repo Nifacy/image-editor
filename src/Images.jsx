@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SourceImage = ({ width, height, children }) => (
   <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
@@ -180,6 +180,27 @@ export const rotateImage = (angle, image) => {
   return (
     <svg width={2 * newWidth} height={2 * newHeight} viewBox={`${sourceCenterX - newWidth} ${sourceCenterY - newHeight} ${2 * newWidth} ${2 * newHeight}`}>
       <g transform={`rotate(${normalizedAngle} ${sourceCenterX} ${sourceCenterY})`}>
+        {image}
+      </g>
+    </svg>
+  );
+};
+
+export const mirrorImage = (direction, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+
+  let transformValue = "";
+
+  if (direction === "horizontal") {
+    transformValue = `scale(-1, 1) translate(-${sourceWidth}, 0)`;
+  } else if (direction === "vertical") {
+    transformValue = `scale(1, -1) translate(0, -${sourceHeight})`;
+  }
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g transform={transformValue}>
         {image}
       </g>
     </svg>

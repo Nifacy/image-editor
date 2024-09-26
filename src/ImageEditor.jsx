@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, rotateImage } from './Images';
-import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, rotateImage, mirrorImage } from './Images';
+import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -287,6 +287,31 @@ const ImageEditor = ({ sourceImage }) => {
     )
   }
 
+  const handleMirrorImage = () => {
+    const defaults = {
+      direction: "horizontal",
+    };
+
+    const options = [
+      { name: "Horizontal", value: "horizontal" },
+      { name: "Vertical", value: "vertical" },
+    ]
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...mirrorImage(data.direction, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <DropdownField name="Direction" id="direction" options={options} defaultValue={defaults.direction} />
+      </EditForm>
+    );
+  }
+
   return (
     <div className="image_editor">
       <CommandMenu>
@@ -299,6 +324,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
+        <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
