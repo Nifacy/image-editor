@@ -135,17 +135,51 @@ export const addRectangle = (position, settings, image) => {
   );
 };
 
+const _toRadians = (angle) => (angle * Math.PI) / 180.0;
+
+const _rotatePoint = (point, angle) => {
+  const rad = _toRadians(angle);
+  const { x, y } = point;
+
+  const rotatedX = x * Math.cos(rad) - y * Math.sin(rad);
+  const rotatedY = x * Math.sin(rad) + y * Math.cos(rad);
+
+  return { x: rotatedX, y: rotatedY };
+};
+
+const _getRotatedImageSize = (w, h, angle) => {
+  const points = [
+    { x: -0.5 * w, y: 0.5 * h },    // Top-left
+    { x: 0.5 * w, y: 0.5 * h },     // Top-right
+    { x: -0.5 * w, y: -0.5 * h },   // Bottom-left
+    { x: 0.5 * w, y: -0.5 * h }     // Bottom-right
+  ];
+
+  const rotatedPoints = points.map(point => _rotatePoint(point, angle));
+
+  const maxX = Math.max(...rotatedPoints.map(p => p.x));
+  const maxY = Math.max(...rotatedPoints.map(p => p.y));
+
+  return {
+    width: Math.abs(maxX),
+    height: Math.abs(maxY)
+  };
+};
+
 export const rotateImage = (angle, image) => {
   let sourceWidth = image.props.width;
   let sourceHeight = image.props.height;
+
+  let sourceCenterX = 0.5 * sourceWidth;
+  let sourceCenterY = 0.5 * sourceHeight;
+
   const normalizedAngle = angle % 360;
 
-  const centerX = 0.5 * sourceWidth;
-  const centerY = 0.5 * sourceHeight;
+  const { width: newWidth, height: newHeight } = _getRotatedImageSize(sourceWidth, sourceHeight, angle);
 
   return (
-    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
-      <g transform={`rotate(${normalizedAngle} ${centerX} ${centerY})`}>
+    <svg width={2 * newWidth} height={2 * newHeight} viewBox={`${sourceCenterX - newWidth} ${sourceCenterY - newHeight} ${2 * newWidth} ${2 * newHeight}`}>
+      <g transform={`rotate(${normalizedAngle} ${sourceCenterX} ${sourceCenterY})`}>
         {image}
       </g>
     </svg>
