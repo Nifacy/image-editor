@@ -104,3 +104,20 @@ export const TextField = ({ id, name, defaultValue }) => {
     </div>
   );
 };
+
+export const DropdownField = ({ id, name, options, defaultValue }) => {
+  return (
+    <div className="property form-group row">
+      <label className="property_label col-auto col-form-label">{name}:</label>
+      <div className="property_value col-auto">
+        <select className="form-control" name={id} defaultValue={defaultValue || ""}>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter } from './Images';
-import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter, addExposure, rotateImage, mirrorImage } from './Images';
+import { EditForm, IntField, RangeField, TextField, ColorField, DropdownField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
+import { faHurricane, faCircle, faRightLeft, faRotateRight, faRotateLeft, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
 const CommandItem = ({ label, onClick, icon }) => {
@@ -10,6 +10,28 @@ const CommandItem = ({ label, onClick, icon }) => {
     <div key={label} className="menu_item btn btn-light" onClick={onClick}>
       <FontAwesomeIcon className="icon" icon={icon} />
       <div className="label">{label}</div>
+    </div>
+  );
+}
+
+const RotateButton = ({ degrees, icon, onClick }) => {
+  return (
+    <button type="button" className="btn btn-light" onClick={() => onClick(degrees)}>
+      <div class="content">
+        <FontAwesomeIcon icon={icon} />
+        <div class="degrees">{degrees}&deg;</div>
+      </div>
+    </button>
+  );
+}
+
+const RotateButtonContainer = ({ onClick }) => {
+  return (
+    <div class="rotate_panel">
+      <RotateButton onClick={onClick} icon={faRotateRight} degrees={90} />
+      <RotateButton onClick={onClick} icon={faRotateLeft} degrees={-90} />
+      <RotateButton onClick={onClick} icon={faRotateRight} degrees={45} />
+      <RotateButton onClick={onClick} icon={faRotateLeft} degrees={-45} />
     </div>
   );
 }
@@ -244,6 +266,71 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddExposure = () => {
+    const defaults = { exposure: 0.0 };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addExposure(Number(data.exposure), image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <RangeField name="Exposure" id="exposure" min={-1.0} max={1.0} />
+      </EditForm>
+    );
+    addExposure
+  }
+
+  const handleRotateImage = () => {
+    const defaults = {
+      angle: 0.0
+    };
+
+    const _rotateImage = (angle) => {
+      setImage({ ...rotateImage(angle, image) });
+      setEditForm(null);
+    };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={(data) => _rotateImage(Number(data.angle))}
+      >
+        <RangeField name="Angle" id="angle" min={0.0} max={360.0} defaultValue={defaults.angle} />
+        <RotateButtonContainer onClick={_rotateImage} />
+      </EditForm>
+    )
+  }
+
+  const handleMirrorImage = () => {
+    const defaults = {
+      direction: "horizontal",
+    };
+
+    const options = [
+      { name: "Horizontal", value: "horizontal" },
+      { name: "Vertical", value: "vertical" },
+    ]
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...mirrorImage(data.direction, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <DropdownField name="Direction" id="direction" options={options} defaultValue={defaults.direction} />
+      </EditForm>
+    );
+  }
+
   const handleAddFilter = () => {
     const defaults = {
       filter: "black-white"
@@ -272,10 +359,13 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Contrast" onClick={handleContrast} icon={faCircleHalfStroke} />
         <CommandItem label="Brightness" onClick={handleBrightness} icon={faSun} />
         <CommandItem label="Saturate" onClick={handleSaturate} icon={faCircleHalfStroke} />
+        <CommandItem label="Rotate" onClick={handleRotateImage} icon={faRotateRight} />
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
         <CommandItem label="Filter" onClick={handleAddFilter} icon={faSquare} />
+        <CommandItem label="Exposure" onClick={handleAddExposure} icon={faHurricane} />
+        <CommandItem label="Flip" onClick={handleMirrorImage} icon={faRightLeft} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
