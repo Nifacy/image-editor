@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const SourceImage = ({ width, height, children }) => (
   <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
@@ -131,6 +131,34 @@ export const addRectangle = (position, settings, image) => {
     <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
       {image}
       <rect x={x} y={y} width={width} height={height} fill={color} />
+    </svg>
+  );
+};
+
+export const addFilter = (filterType, image) => {
+  let sourceWidth = image.props.width;
+  let sourceHeight = image.props.height;
+  let filterValue = "";
+
+  switch (filterType) {
+    case "black-white":
+      filterValue = "grayscale(100%)";
+      break;
+    case "sepia":
+      filterValue = "sepia(100%)";
+      break;
+    case "vintage":
+      filterValue = "sepia(60%) contrast(85%) brightness(90%)";
+      break;
+    default:
+      throw new Error("Unknown filter");
+  }
+
+  return (
+    <svg width={sourceWidth} height={sourceHeight} viewBox={`0 0 ${sourceWidth} ${sourceHeight}`}>
+      <g style={{ filter: filterValue }}>
+        {image}
+      </g>
     </svg>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle } from './Images';
+import { SourceImage, resizeImage, cropImage, addColorContrast, addBrightness, addSaturate, addText, addCircle, addRectangle, addFilter } from './Images';
 import { EditForm, IntField, RangeField, TextField, ColorField } from './EditForm'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faSquare, faT, faCropSimple, faExpand, faCircleHalfStroke, faSun } from '@fortawesome/free-solid-svg-icons'
@@ -244,6 +244,26 @@ const ImageEditor = ({ sourceImage }) => {
     );
   }
 
+  const handleAddFilter = () => {
+    const defaults = {
+      filter: "black-white"
+    };
+
+    setEditForm(
+      <EditForm
+        defaultState={defaults}
+        onSubmit={
+          (data) => {
+            setImage({ ...addFilter(data.filter, image) });
+            setEditForm(null);
+          }
+        }
+      >
+        <TextField name="Filter" id="filter" defaultValue={defaults.filter} />
+      </EditForm>
+    );
+  }
+
   return (
     <div className="image_editor">
       <CommandMenu>
@@ -255,6 +275,7 @@ const ImageEditor = ({ sourceImage }) => {
         <CommandItem label="Text" onClick={handleAddText} icon={faT} />
         <CommandItem label="Circle" onClick={handleAddCircle} icon={faCircle} />
         <CommandItem label="Rectangle" onClick={handleAddRectangle} icon={faSquare} />
+        <CommandItem label="Filter" onClick={handleAddFilter} icon={faSquare} />
       </CommandMenu>
       <CommandSettings editForm={editForm} />
       <Preview image={image} />
